@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -68,6 +70,7 @@ void addInterceptors() async {
     InterceptorsWrapper(
       onRequest: (request, handler) async {
         var token = await storage.read(key: "authToken");
+        log(token ?? '', name: "token");
         if (token != null && token != '') {
           request.headers['Authorization'] = 'Bearer $token';
         }
