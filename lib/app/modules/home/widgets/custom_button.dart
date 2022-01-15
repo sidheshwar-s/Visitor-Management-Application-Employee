@@ -22,12 +22,14 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius!),
         color: color,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(
             width: 5,

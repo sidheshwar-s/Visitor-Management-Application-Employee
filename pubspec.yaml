@@ -7,8 +7,13 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  dio: ^4.0.4
+  firebase_auth: ^3.3.5
+  firebase_core: ^1.11.0
+  firebase_messaging: ^11.2.5
   flutter:
     sdk: flutter
+  flutter_secure_storage: ^5.0.2
   get: 4.6.1
   intl: ^0.17.0
 

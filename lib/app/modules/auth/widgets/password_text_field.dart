@@ -17,7 +17,7 @@ class PasswordTextField extends StatelessWidget {
       child: TextField(
         obscureText: true,
         style: const TextStyle(color: kWhite),
-        controller: controller.emailController,
+        controller: controller.passwordController,
         decoration: InputDecoration(
           hintText: 'Password',
           border: OutlineInputBorder(

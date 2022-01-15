@@ -16,21 +16,21 @@ class EmailTextField extends StatelessWidget {
       padding: const EdgeInsets.all(25.0),
       child: TextField(
         style: const TextStyle(color: kWhite),
-        controller: controller.passwordController,
+        controller: controller.emailController,
         decoration: InputDecoration(
           hintText: 'Email',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           prefixIcon: const Icon(Icons.mail),
-          suffixIcon: controller.passwordController.text.isEmpty
+          suffixIcon: controller.emailController.text.isEmpty
               ? Container(width: 0)
               : IconButton(
                   icon: const Icon(
                     Icons.close,
                     color: kGrey,
                   ),
-                  onPressed: () => controller.passwordController.clear(),
+                  onPressed: () => controller.emailController.clear(),
                 ),
         ),
         keyboardType: TextInputType.emailAddress,
