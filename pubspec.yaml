@@ -13,8 +13,10 @@ dependencies:
   firebase_messaging: ^11.2.5
   flutter:
     sdk: flutter
+  flutter_datetime_picker: ^1.5.1
   flutter_secure_storage: ^5.0.2
   get: 4.6.1
+  google_fonts: ^2.2.0
   intl: ^0.17.0
 
 dev_dependencies:

@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
+import 'package:vms_employee_flutter/app/routes/app_pages.dart';
 
 class HomeDrawer extends GetView<HomeController> {
   const HomeDrawer({
@@ -18,27 +19,30 @@ class HomeDrawer extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: KDarkBlue,
-      child: ListView(
-        children: [
-          EmployeeInfo(authController: authController),
-          const Divider(
-            color: kWhite,
-          ),
-          const HomeListTile(),
-          const DashboardListTile(),
-          const VisitorLogListTile(),
-          const SizedBox(
-            height: 10,
-          ),
-          const Divider(
-            color: kWhite,
-          ),
-          VacationModeListTile(controller: controller),
-          LogoutButtonListTile(
-            controller: authController,
-          ),
-        ],
+      backgroundColor: kDarkBlue,
+      child: DefaultTextStyle(
+        style: const TextStyle(color: kWhite),
+        child: ListView(
+          children: [
+            EmployeeInfo(authController: authController),
+            const Divider(
+              color: kWhite,
+            ),
+            const HomeListTile(),
+            const DashboardListTile(),
+            const VisitorLogListTile(),
+            const SizedBox(
+              height: 10,
+            ),
+            const Divider(
+              color: kWhite,
+            ),
+            VacationModeListTile(controller: controller),
+            LogoutButtonListTile(
+              controller: authController,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -55,40 +59,48 @@ class EmployeeInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DrawerHeader(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          authController.photoUrl != null
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    authController.photoUrl!,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            authController.photoUrl != null
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      authController.photoUrl!,
+                    ),
+                    radius: 40,
+                  )
+                : const CircleAvatar(
+                    backgroundImage: AssetImage(
+                      'assets/icons/user_image.png',
+                    ),
+                    radius: 40,
                   ),
-                  radius: 40,
-                )
-              : const CircleAvatar(
-                  backgroundImage: AssetImage(
-                    'assets/icons/user_image.png',
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  authController.userName ?? "No name",
+                  style: Get.textTheme.headline6?.copyWith(
+                    color: kWhite,
                   ),
-                  radius: 40,
                 ),
-          const SizedBox(
-            width: 20,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                authController.userName ?? "No name",
-                style: Get.textTheme.headline6,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(authController.email ?? "email")
-            ],
-          )
-        ],
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  authController.email ?? "email",
+                  style: const TextStyle(color: kWhite),
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -112,7 +124,10 @@ class LogoutButtonListTile extends StatelessWidget {
           Icons.logout,
           color: kWhite,
         ),
-        title: const Text("Log out"),
+        title: const Text(
+          "Log out",
+          style: TextStyle(color: kWhite),
+        ),
         style: ListTileStyle.drawer,
       ),
     );
@@ -140,7 +155,10 @@ class VacationModeListTile extends StatelessWidget {
           },
         ),
       ),
-      title: const Text("Vacation Mode"),
+      title: const Text(
+        "Vacation Mode",
+        style: TextStyle(color: kWhite),
+      ),
     );
   }
 }
@@ -155,12 +173,17 @@ class VisitorLogListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(Routes.VISITOR_LOG);
+        },
         leading: const Icon(
           Icons.workspaces_outline,
           color: kWhite,
         ),
-        title: const Text("Visitor log"),
+        title: const Text(
+          "Visitor log",
+          style: TextStyle(color: kWhite),
+        ),
         style: ListTileStyle.drawer,
       ),
     );
@@ -177,12 +200,17 @@ class DashboardListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Get.toNamed(Routes.DASHBOARD);
+        },
         leading: const Icon(
           Icons.dashboard,
           color: kWhite,
         ),
-        title: const Text("Dashboard"),
+        title: const Text(
+          "Dashboard",
+          style: TextStyle(color: kWhite),
+        ),
         style: ListTileStyle.drawer,
       ),
     );
@@ -199,12 +227,17 @@ class HomeListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Get.back();
+        },
         leading: const Icon(
           Icons.home,
           color: kWhite,
         ),
-        title: const Text("Home"),
+        title: const Text(
+          "Home",
+          style: TextStyle(color: kWhite),
+        ),
         style: ListTileStyle.drawer,
       ),
     );

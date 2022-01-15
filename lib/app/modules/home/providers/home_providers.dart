@@ -22,4 +22,31 @@ class HomeProviders {
           (duration) => showSnackBar(title: e.toString()));
     }
   }
+
+  Future<void>? updateRequestedMeeting(
+      {required String meetingId,
+      required String status,
+      String? meetingNote,
+      String? rejectedReason,
+      String? rescheduledTime}) async {
+    Map<String, String?> data = {
+      "meetingId": meetingId,
+      "status": status,
+      "meetingMinutesNotes": meetingNote,
+      "rejectedReasons": rejectedReason,
+      "rescheduledTime": rescheduledTime,
+    };
+
+    const String url = "$apiUrl/meeting/updateMeetingStatus";
+
+    try {
+      await dioClient.post(url, data: data);
+    } on DioError catch (e) {
+      WidgetsBinding.instance
+          ?.addPostFrameCallback((duration) => showSnackBar(title: e.message));
+    } catch (e) {
+      WidgetsBinding.instance?.addPostFrameCallback(
+          (duration) => showSnackBar(title: e.toString()));
+    }
+  }
 }

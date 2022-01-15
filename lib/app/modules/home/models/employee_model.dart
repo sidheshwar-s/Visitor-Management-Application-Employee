@@ -88,7 +88,7 @@ class EmployeeModel {
 
   factory EmployeeModel.fromMap(Map<String, dynamic> map) {
     return EmployeeModel(
-      id: map['_id'],
+      id: map['_id'].toString(),
       name: map['name'],
       phone: map['phone'],
       email: map['email'],

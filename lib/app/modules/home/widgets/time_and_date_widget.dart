@@ -13,10 +13,10 @@ class TimeAndDateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
-      height: 180,
+      height: 140,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: KDarkBlue,
+        color: kDarkBlue,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(
@@ -33,6 +33,7 @@ class TimeAndDateWidget extends StatelessWidget {
             stream: Stream.periodic(const Duration(seconds: 1)),
             builder: (context, snapshot) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(

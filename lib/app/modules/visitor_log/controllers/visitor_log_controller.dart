@@ -1,20 +1,3 @@
 import 'package:get/get.dart';
 
-class VisitorLogController extends GetxController {
-  //TODO: Implement VisitorLogController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {}
-  void increment() => count.value++;
-}
+class VisitorLogController extends GetxController {}

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/home_drawer.dart';
+import 'package:vms_employee_flutter/app/modules/home/widgets/in_progess_meeting_widget.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/request_widget.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/time_and_date_widget.dart';
+import 'package:vms_employee_flutter/app/modules/home/widgets/today_completed_meetings.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -18,30 +21,112 @@ class HomeView extends GetView<HomeController> {
           title: const Text('HomePage'),
         ),
         body: controller.obx(
-          (state) => SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
+          (state) => RefreshIndicator(
+            color: kDarkBlue,
+            onRefresh: () async {
+              controller.getHomePageDetails();
+            },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: Get.size.height,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const TimeAndDateWidget(),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (controller
+                          .homePageDetails!.requestMeetings!.isNotEmpty)
+                        Text(
+                          "Requests",
+                          style: Get.textTheme.headline5?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      if (controller
+                          .homePageDetails!.requestMeetings!.isNotEmpty)
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      if (controller
+                          .homePageDetails!.requestMeetings!.isNotEmpty)
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller
+                              .homePageDetails!.requestMeetings!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var currentVisitor = controller.homePageDetails!
+                                .requestMeetings![index].visitor;
+                            return RequestWidget(
+                              meetingId: controller
+                                  .homePageDetails!.requestMeetings![index].id!,
+                              name: currentVisitor!.name!,
+                              photoUrl: currentVisitor.selfieLink,
+                            );
+                          },
+                        ),
+                      if (controller
+                          .homePageDetails!.inProgressMeetings!.isNotEmpty)
+                        Text(
+                          "In Progess Meetings",
+                          style: Get.textTheme.headline5?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      if (controller
+                          .homePageDetails!.inProgressMeetings!.isNotEmpty)
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      if (controller
+                          .homePageDetails!.inProgressMeetings!.isNotEmpty)
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: controller
+                              .homePageDetails!.inProgressMeetings!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var currentVisitor = controller.homePageDetails!
+                                .inProgressMeetings![index].visitor;
+                            return InProgressWidget(
+                              meetingId: controller.homePageDetails!
+                                  .inProgressMeetings![index].id!,
+                              name: currentVisitor!.name!,
+                              photoUrl: currentVisitor.selfieLink,
+                            );
+                          },
+                        ),
+                      if (controller
+                          .homePageDetails!.todayCompletedMeetings!.isNotEmpty)
+                        Text(
+                          "Today Completed Meetings",
+                          style: Get.textTheme.headline5?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      if (controller
+                          .homePageDetails!.todayCompletedMeetings!.isNotEmpty)
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      if (controller
+                          .homePageDetails!.todayCompletedMeetings!.isNotEmpty)
+                        TodayCompleteMeetings(
+                          controller: controller,
+                        ),
+                    ],
                   ),
-                  const TimeAndDateWidget(),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Requests",
-                    style: Get.textTheme.headline5?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const RequestWidget(),
-                ],
+                ),
               ),
             ),
           ),

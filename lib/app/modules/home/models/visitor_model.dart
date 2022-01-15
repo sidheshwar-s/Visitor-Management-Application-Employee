@@ -69,7 +69,7 @@ class VisitorModel {
 
   factory VisitorModel.fromMap(Map<String, dynamic> map) {
     return VisitorModel(
-      id: map['_id'],
+      id: map['_id'].toString(),
       name: map['name'],
       phone: map['phone'],
       address: map['address'],

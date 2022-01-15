@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
-import 'package:vms_employee_flutter/app/modules/auth/views/root_view.dart';
+
 import '../modules/auth/bindings/auth_binding.dart';
+import '../modules/auth/views/root_view.dart';
+import '../modules/dashboard/bindings/dashboard_binding.dart';
+import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/visitor_log/bindings/visitor_log_binding.dart';
@@ -28,8 +31,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.VISITOR_LOG,
-      page: () => VisitorLogView(),
+      page: () => const VisitorLogView(),
       binding: VisitorLogBinding(),
+    ),
+    GetPage(
+      name: _Paths.DASHBOARD,
+      page: () => const DashboardView(),
+      binding: DashboardBinding(),
     ),
   ];
 }

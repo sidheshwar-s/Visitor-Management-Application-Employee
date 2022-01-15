@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:vms_employee_flutter/app/modules/home/models/employee_model.dart';
 import 'package:vms_employee_flutter/app/modules/home/models/member_model.dart';
 import 'package:vms_employee_flutter/app/modules/home/models/visitor_model.dart';
@@ -22,6 +20,9 @@ class MeetingModel {
   final String? vehicleNumber;
   final String? companyId;
   final DateTime? counterEndTime;
+  final DateTime? meetingAcceptedTime;
+  final DateTime? meetingEndTime;
+  final String? meetingMinutesNotes;
   MeetingModel({
     this.id,
     this.visitor,
@@ -38,6 +39,9 @@ class MeetingModel {
     this.vehicleNumber,
     this.companyId,
     this.counterEndTime,
+    this.meetingAcceptedTime,
+    this.meetingEndTime,
+    this.meetingMinutesNotes,
   });
 
   MeetingModel copyWith({
@@ -56,6 +60,9 @@ class MeetingModel {
     String? vehicleNumber,
     String? companyId,
     DateTime? counterEndTime,
+    DateTime? meetingAcceptedTime,
+    DateTime? meetingEndTime,
+    String? meetingMinutesNotes,
   }) {
     return MeetingModel(
       id: id ?? this.id,
@@ -98,17 +105,17 @@ class MeetingModel {
 
   factory MeetingModel.fromMap(Map<String, dynamic> map) {
     return MeetingModel(
-      id: map['_id'] ?? '',
+      id: map['_id'].toString(),
       visitor:
           map['visitor'] != null ? VisitorModel.fromMap(map['visitor']) : null,
       employee: map['employee'] != null
           ? EmployeeModel.fromMap(map['employee'])
           : null,
       meetingRaisedTime: map['meetingRaisedTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['meetingRaisedTime'])
+          ? DateTime.parse(map['meetingRaisedTime'])
           : null,
       meetingRequestTime: map['meetingRequestTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['meetingRequestTime'])
+          ? DateTime.parse(map['meetingRequestTime'])
           : null,
       accepted: map['accepted'],
       rescheduled: map['rescheduled'],
@@ -123,8 +130,15 @@ class MeetingModel {
       vehicleNumber: map['vehicleNumber'],
       companyId: map['company'],
       counterEndTime: map['counterEndTime'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['counterEndTime'])
+          ? DateTime.parse(map['counterEndTime'])
           : null,
+      meetingAcceptedTime: map['meetingAcceptedTime'] != null
+          ? DateTime.parse(map['meetingAcceptedTime'])
+          : null,
+      meetingEndTime: map['meetingEndTime'] != null
+          ? DateTime.parse(map['meetingEndTime'])
+          : null,
+      meetingMinutesNotes: map['meetingMinutesNotes'],
     );
   }
 

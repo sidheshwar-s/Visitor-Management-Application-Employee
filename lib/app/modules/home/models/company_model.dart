@@ -47,7 +47,7 @@ class CompanyModel {
 
   factory CompanyModel.fromMap(Map<String, dynamic> map) {
     return CompanyModel(
-      id: map['_id'],
+      id: map['_id'].toString(),
       name: map['name'],
       address: map['address'],
       createdAt: map['createdAt'] != null

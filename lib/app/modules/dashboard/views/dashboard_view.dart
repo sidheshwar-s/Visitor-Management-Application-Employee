@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/visitor_log_controller.dart';
+import '../controllers/dashboard_controller.dart';
 
-class VisitorLogView extends GetView<VisitorLogController> {
-  const VisitorLogView({Key? key}) : super(key: key);
+class DashboardView extends GetView<DashboardController> {
+  const DashboardView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Visitors Log'),
+        title: const Text('Dashboard'),
         centerTitle: true,
       ),
     );

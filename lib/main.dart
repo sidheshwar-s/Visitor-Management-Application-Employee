@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vms_employee_flutter/app/data/common.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'app/routes/app_pages.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: kBlue,
           foregroundColor: kWhite,
         ),
-        textTheme: Typography(platform: TargetPlatform.android).white,
+        fontFamily: GoogleFonts.roboto(color: kWhite).fontFamily,
         appBarTheme: const AppBarTheme(
           color: kBlue,
           foregroundColor: kWhite,
