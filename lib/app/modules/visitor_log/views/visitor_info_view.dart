@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
-
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/visitor_log/controllers/visitor_info_controller.dart';
+import 'package:vms_employee_flutter/app/modules/visitor_log/widgets/meeting_count_widget.dart';
 
 class VisitorInfoView extends GetView<VisitorInfoController> {
   const VisitorInfoView({
@@ -79,40 +79,6 @@ class VisitorInfoView extends GetView<VisitorInfoController> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class MeetingCountWidget extends StatelessWidget {
-  const MeetingCountWidget({
-    Key? key,
-    required this.title,
-    required this.color,
-  }) : super(key: key);
-  final String title;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      width: double.infinity,
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: Get.textTheme.headline5?.copyWith(
-              color: kWhite,
-            ),
-          ),
-        ],
       ),
     );
   }
