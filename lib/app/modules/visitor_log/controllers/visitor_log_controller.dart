@@ -6,6 +6,7 @@ import 'package:vms_employee_flutter/app/modules/visitor_log/providers/visitor_l
 class VisitorLogController extends GetxController with StateMixin {
   TextEditingController nameController = TextEditingController();
   VisitorLogModel? visitorLogModel;
+  RxString searchString = RxString("");
   @override
   void onInit() {
     getVisitorsLog();

@@ -14,6 +14,9 @@ class VisitorSearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller.nameController,
+      onChanged: (text) {
+        controller.searchString.value = text.toLowerCase();
+      },
       decoration: InputDecoration(
         hintText: "Enter visitor name",
         suffixIcon: IconButton(

@@ -49,76 +49,92 @@ class VisitorLogView extends GetView<VisitorLogController> {
                     itemBuilder: (BuildContext context, int index) {
                       final currentVisitor =
                           controller.visitorLogModel!.visitors[index];
-                      return InkWell(
-                        borderRadius: BorderRadius.circular(15),
-                        onTap: () {
-                          Get.lazyPut<VisitorInfoController>(
-                            () => VisitorInfoController(),
-                          );
-                          Get.find<VisitorInfoController>()
-                              .getVisitorInfo(currentVisitor.id!);
-                          Get.to(
-                            () => VisitorInfoView(
-                              visitorId: currentVisitor.id!,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          margin: const EdgeInsets.only(bottom: 10),
-                          height: 80,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: kDarkBlue,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: Row(
-                            children: [
-                              currentVisitor.selfieLink != null
-                                  ? CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage: NetworkImage(
-                                          currentVisitor.selfieLink!),
-                                    )
-                                  : const CircleAvatar(
-                                      radius: 35,
-                                      backgroundImage: AssetImage(
-                                          'assets/icons/user_image.png'),
-                                    ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
+
+                      return Obx(
+                        () {
+                          if (currentVisitor.name!
+                              .toLowerCase()
+                              .contains(controller.searchString.value)) {
+                            return InkWell(
+                              borderRadius: BorderRadius.circular(15),
+                              onTap: () {
+                                Get.lazyPut<VisitorInfoController>(
+                                  () => VisitorInfoController(),
+                                );
+                                Get.find<VisitorInfoController>()
+                                    .getVisitorInfo(currentVisitor.id!);
+                                Get.to(
+                                  () => VisitorInfoView(
+                                    visitorId: currentVisitor.id!,
+                                    visitorName: currentVisitor.name!,
+                                    imageUrl: currentVisitor.selfieLink,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(15),
+                                margin: const EdgeInsets.only(bottom: 10),
+                                height: 80,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: kDarkBlue,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Row(
                                   children: [
-                                    Text(
-                                      currentVisitor.name ?? "No name",
-                                    ),
+                                    currentVisitor.selfieLink != null
+                                        ? CircleAvatar(
+                                            radius: 35,
+                                            backgroundImage: NetworkImage(
+                                                currentVisitor.selfieLink!),
+                                          )
+                                        : const CircleAvatar(
+                                            radius: 35,
+                                            backgroundImage: AssetImage(
+                                                'assets/icons/user_image.png'),
+                                          ),
                                     const SizedBox(
-                                      height: 10,
+                                      width: 10,
                                     ),
-                                    Text(
-                                      currentVisitor.companyName ??
-                                          "No company name",
-                                      style: Get.textTheme.bodyText1?.copyWith(
-                                        color: kWhite,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            currentVisitor.name ?? "No name",
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            currentVisitor.companyName ??
+                                                "No company name",
+                                            style: Get.textTheme.bodyText1
+                                                ?.copyWith(
+                                              color: kWhite,
+                                            ),
+                                          )
+                                        ],
                                       ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: kWhite,
                                     )
                                   ],
                                 ),
                               ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: kWhite,
-                              )
-                            ],
-                          ),
-                        ),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
                       );
                     },
-                  ),
+                  )
                 ],
               ),
             ),
