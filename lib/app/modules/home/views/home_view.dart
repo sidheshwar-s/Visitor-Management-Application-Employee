@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
@@ -7,14 +11,51 @@ import 'package:vms_employee_flutter/app/modules/home/widgets/in_progess_meeting
 import 'package:vms_employee_flutter/app/modules/home/widgets/request_widget.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/time_and_date_widget.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/today_completed_meetings.dart';
+import 'package:vms_employee_flutter/main.dart';
 import '../controllers/home_controller.dart';
 
-class HomeView extends GetView<HomeController> {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? androidNotification = message.notification?.android;
+      if (notification != null && androidNotification != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('A new onMessageOpenedApp event was published!');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final controller = Get.find<HomeController>();
     return Scaffold(
         drawer: HomeDrawer(authController: authController),
         appBar: AppBar(
