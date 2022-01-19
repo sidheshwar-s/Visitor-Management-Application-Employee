@@ -29,32 +29,34 @@ class TimeAndDateWidget extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          StreamBuilder(
-            stream: Stream.periodic(const Duration(seconds: 1)),
-            builder: (context, snapshot) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat.yMMMMEEEEd().format(DateTime.now()),
-                    style: Get.textTheme.headline6?.copyWith(
-                      color: kWhite,
-                      fontSize: 17,
+          Flexible(
+            child: StreamBuilder(
+              stream: Stream.periodic(const Duration(seconds: 1)),
+              builder: (context, snapshot) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      DateFormat.yMMMMEEEEd().format(DateTime.now()),
+                      style: Get.textTheme.headline6?.copyWith(
+                        color: kWhite,
+                        fontSize: 17,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    DateFormat.jms().format(DateTime.now()),
-                    style: Get.textTheme.headline6?.copyWith(
-                      color: kWhite,
+                    const SizedBox(
+                      height: 20,
                     ),
-                  )
-                ],
-              );
-            },
+                    Text(
+                      DateFormat.jms().format(DateTime.now()),
+                      style: Get.textTheme.headline6?.copyWith(
+                        color: kWhite,
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),

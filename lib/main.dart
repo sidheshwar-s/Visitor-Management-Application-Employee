@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vms_employee_flutter/app/data/common.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
+import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -25,27 +26,29 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? androidNotification = message.notification?.android;
-    if (notification != null && androidNotification != null) {
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        NotificationDetails(
-          android: AndroidNotificationDetails(
-            channel.id,
-            channel.name,
-            channelDescription: channel.description,
-            color: Colors.blue,
-            playSound: true,
-            icon: '@mipmap/ic_launcher',
-          ),
+  log(message.data.toString());
+  MeetingModel meetingModel = MeetingModel.fromJson(message.data["meeting"]);
+  if (meetingModel.visitor != null) {
+    flutterLocalNotificationsPlugin.show(
+      99912,
+      "${meetingModel.visitor?.name} is requesting for meeting",
+      'Tap for more details',
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          priority: Priority.max,
+          importance: Importance.max,
+          fullScreenIntent: true,
+          channelDescription: channel.description,
+          color: Colors.blue,
+          playSound: true,
+          icon: '@mipmap/ic_launcher',
         ),
-      );
-    }
-  });
+      ),
+    );
+  }
+
   log('Handling a background message ${message.messageId}');
 }
 
@@ -112,6 +115,15 @@ void handleFcmNotifications() async {
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+
+  await flutterLocalNotificationsPlugin.initialize(
+    const InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    ),
+    onSelectNotification: (payLoad) {
+      print("on click");
+    },
+  );
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,

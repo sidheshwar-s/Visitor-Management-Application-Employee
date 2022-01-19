@@ -6,6 +6,8 @@ import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/meeting_request/bindings/meeting_request_binding.dart';
+import '../modules/meeting_request/views/meeting_request_view.dart';
 import '../modules/visitor_log/bindings/visitor_log_binding.dart';
 import '../modules/visitor_log/views/visitor_log_view.dart';
 
@@ -16,7 +18,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.AUTH;
+  static const INITIAL = Routes.MEETING_REQUEST;
 
   static final routes = [
     GetPage(
@@ -38,6 +40,11 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEETING_REQUEST,
+      page: () => MeetingRequestView(),
+      binding: MeetingRequestBinding(),
     ),
   ];
 }

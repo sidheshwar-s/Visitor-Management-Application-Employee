@@ -1,11 +1,11 @@
 import 'dart:developer';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
+import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/home_drawer.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/in_progess_meeting_widget.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/request_widget.dart';
@@ -28,6 +28,30 @@ class _HomeViewState extends State<HomeView> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? androidNotification = message.notification?.android;
+      log(message.data.toString());
+      MeetingModel meetingModel =
+          MeetingModel.fromJson(message.data["meeting"]);
+      if (meetingModel.visitor != null) {
+        flutterLocalNotificationsPlugin.show(
+          99912,
+          "${meetingModel.visitor?.name} is requesting for meeting",
+          'Tap for more details',
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              priority: Priority.max,
+              importance: Importance.max,
+              fullScreenIntent: true,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+      }
+
       if (notification != null && androidNotification != null) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
