@@ -71,7 +71,11 @@ class RequestWidget extends GetView<HomeController> {
                         color: kRed,
                         onPressed: () async {
                           controller.isUpdationInProgress.value = true;
-                          await handleRejection();
+                          await handleRejection(
+                            meetingId,
+                            controller.rejectedReasonController,
+                            controller,
+                          );
                           controller.isUpdationInProgress.value = false;
                         },
                         icon: Icons.cancel,
@@ -135,62 +139,63 @@ class RequestWidget extends GetView<HomeController> {
       ),
     );
   }
+}
 
-  handleRejection() async {
-    Get.defaultDialog(
-      titlePadding: const EdgeInsets.only(
-        top: 15,
-        bottom: 5,
+handleRejection(String meetingId, TextEditingController textEditingController,
+    HomeController controller) async {
+  Get.defaultDialog(
+    titlePadding: const EdgeInsets.only(
+      top: 15,
+      bottom: 5,
+    ),
+    title: 'REJECT',
+    titleStyle: Get.textTheme.headline6?.copyWith(color: kBlack),
+    cancelTextColor: kBlack,
+    confirmTextColor: kBlack,
+    onCancel: () => Get.back(),
+    onConfirm: () async {
+      await HomeProviders().updateRequestedMeeting(
+        meetingId: meetingId,
+        status: "rejected",
+        rejectedReason: textEditingController.text,
+      );
+      Get.back();
+      controller.getHomePageDetails();
+    },
+    content: Padding(
+      padding: const EdgeInsets.only(
+        left: 20,
+        right: 20,
       ),
-      title: 'REJECT',
-      titleStyle: Get.textTheme.headline6?.copyWith(color: kBlack),
-      cancelTextColor: kBlack,
-      confirmTextColor: kBlack,
-      onCancel: () => Get.back(),
-      onConfirm: () async {
-        await HomeProviders().updateRequestedMeeting(
-          meetingId: meetingId,
-          status: "rejected",
-          rejectedReason: controller.rejectedReasonController.text,
-        );
-        Get.back();
-        controller.getHomePageDetails();
-      },
-      content: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
+      child: DefaultTextStyle(
+        style: Get.textTheme.bodyText1!.copyWith(
+          color: kBlack,
+          fontSize: 15,
         ),
-        child: DefaultTextStyle(
-          style: Get.textTheme.bodyText1!.copyWith(
-            color: kBlack,
-            fontSize: 15,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Enter the reason for rejection",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Enter the reason for rejection",
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            TextField(
+              controller: textEditingController,
+              style: const TextStyle(
+                color: kBlack,
               ),
-              const SizedBox(
-                height: 5,
+              cursorColor: kBlack,
+              decoration: const InputDecoration(
+                focusColor: kBlue,
+                hoverColor: kBlack,
+                hintText: "Rejection reason",
               ),
-              TextField(
-                controller: controller.rejectedReasonController,
-                style: const TextStyle(
-                  color: kBlack,
-                ),
-                cursorColor: kBlack,
-                decoration: const InputDecoration(
-                  focusColor: kBlue,
-                  hoverColor: kBlack,
-                  hintText: "Rejection reason",
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 }
