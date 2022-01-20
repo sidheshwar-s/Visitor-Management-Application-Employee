@@ -1,25 +1,26 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vms_employee_flutter/app/data/constants.dart';
-import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 
-import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
+import 'package:vms_employee_flutter/app/data/constants.dart';
+import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
+import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/providers/home_providers.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/request_widget.dart';
+import 'package:vms_employee_flutter/app/modules/meeting_request/models/meeting_request_model.dart';
 import 'package:vms_employee_flutter/app/routes/app_pages.dart';
+
 import '../controllers/meeting_request_controller.dart';
 
 class MeetingRequestView extends GetView<MeetingRequestController> {
   const MeetingRequestView({
     Key? key,
-    this.meetingModel,
+    this.meetingRequestModel,
   }) : super(key: key);
-  final MeetingModel? meetingModel;
+  final MeetingRequestModel? meetingRequestModel;
 
   @override
   Widget build(BuildContext context) {
+    final meetingModel = meetingRequestModel?.meeting;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -89,10 +90,15 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                         children: [
                           InkWell(
                             onTap: () async {
-                              await HomeProviders().updateRequestedMeeting(
-                                meetingId: meetingModel?.id ?? 'none',
-                                status: "accepted",
-                              );
+                              await HomeProviders()
+                                  .updateRequestedMeeting(
+                                    meetingId: meetingModel?.id ?? 'none',
+                                    status: "accepted",
+                                  )
+                                  ?.whenComplete(() =>
+                                      HomeController().getHomePageDetails());
+
+                              Get.lazyPut(() => AuthController());
                               Get.offAllNamed(Routes.HOME);
                             },
                             child: Container(
@@ -109,11 +115,14 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              handleRejection(
-                                  meetingModel?.id ?? 'none',
-                                  controller.rejectedReasonController,
-                                  Get.find<HomeController>());
+                            onTap: () async {
+                              await handleRejection(
+                                meetingModel?.id ?? 'none',
+                                controller.rejectedReasonController,
+                                Get.find<HomeController>(),
+                                onTappedNotification: true,
+                                shouldCloseApp: true,
+                              );
                             },
                             child: Container(
                               padding: const EdgeInsets.all(20),

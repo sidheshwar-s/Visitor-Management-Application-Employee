@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
@@ -142,7 +143,8 @@ class RequestWidget extends GetView<HomeController> {
 }
 
 handleRejection(String meetingId, TextEditingController textEditingController,
-    HomeController controller) async {
+    HomeController controller,
+    {bool shouldCloseApp = false, bool onTappedNotification = false}) async {
   Get.defaultDialog(
     titlePadding: const EdgeInsets.only(
       top: 15,
@@ -154,13 +156,22 @@ handleRejection(String meetingId, TextEditingController textEditingController,
     confirmTextColor: kBlack,
     onCancel: () => Get.back(),
     onConfirm: () async {
-      await HomeProviders().updateRequestedMeeting(
+      await HomeProviders()
+          .updateRequestedMeeting(
         meetingId: meetingId,
         status: "rejected",
         rejectedReason: textEditingController.text,
-      );
+      )
+          ?.whenComplete(() {
+        controller.getHomePageDetails();
+        if (shouldCloseApp) {
+          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        }
+        if (onTappedNotification) {
+          Get.back();
+        }
+      });
       Get.back();
-      controller.getHomePageDetails();
     },
     content: Padding(
       padding: const EdgeInsets.only(

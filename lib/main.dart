@@ -4,14 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vms_employee_flutter/app/data/common.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
+import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
 import 'package:vms_employee_flutter/app/modules/meeting_request/controllers/meeting_request_controller.dart';
+import 'package:vms_employee_flutter/app/modules/meeting_request/models/meeting_request_model.dart';
+import 'package:vms_employee_flutter/app/modules/meeting_request/providers/meeting_request_providers.dart';
 import 'package:vms_employee_flutter/app/modules/meeting_request/views/meeting_request_view.dart';
 import 'app/routes/app_pages.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -50,6 +54,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
         ),
       ),
     );
+    Future.delayed(const Duration(seconds: 60), () {
+      flutterLocalNotificationsPlugin.cancelAll();
+    });
   }
 
   log('Handling a background message ${message.messageId}');
@@ -123,13 +130,25 @@ void handleFcmNotifications() async {
     const InitializationSettings(
       android: AndroidInitializationSettings('@mipmap/ic_launcher'),
     ),
-    onSelectNotification: (payLoad) {
+    onSelectNotification: (payLoad) async {
+      Get.lazyPut(() => AuthController());
       Get.lazyPut(() => HomeController());
       Get.lazyPut(() => MeetingRequestController());
-      // TODO: ADD API CALLS
-      Get.to(MeetingRequestView(
-        meetingModel: MeetingModel(),
-      ));
+      MeetingRequestModel? meetingRequestModel =
+          await MeetingRequestProviders().getMeetingRequestDetails();
+      if (meetingRequestModel != null) {
+        Get.to(
+          () => MeetingRequestView(
+            meetingRequestModel: meetingRequestModel,
+          ),
+        );
+      }
+      // Duration? dx =
+      //     meetingRequestModel?.counterEndTime?.difference(DateTime.now());
+      // if (dx != null) {
+      //   Future
+      //   SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      // }
     },
   );
 

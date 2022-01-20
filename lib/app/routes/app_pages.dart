@@ -43,7 +43,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MEETING_REQUEST,
-      page: () => MeetingRequestView(),
+      page: () => const MeetingRequestView(),
       binding: MeetingRequestBinding(),
     ),
   ];

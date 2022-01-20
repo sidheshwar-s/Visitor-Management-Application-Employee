@@ -26,8 +26,6 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? androidNotification = message.notification?.android;
       log(message.data.toString());
       MeetingModel meetingModel =
           MeetingModel.fromJson(message.data["meeting"]);
@@ -50,29 +48,10 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         );
+        Future.delayed(const Duration(seconds: 60), () {
+          flutterLocalNotificationsPlugin.cancelAll();
+        });
       }
-
-      if (notification != null && androidNotification != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription: channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/ic_launcher',
-            ),
-          ),
-        );
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      log('A new onMessageOpenedApp event was published!');
     });
   }
 

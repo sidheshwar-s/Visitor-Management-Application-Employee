@@ -11,15 +11,17 @@ class RootView extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      if (controller.user.value == null) {
-        return const AuthView();
-      } else {
-        Get.lazyPut<HomeController>(
-          () => HomeController(),
-        );
-        return const HomeView();
-      }
-    });
+    return Obx(
+      () {
+        if (controller.user.value == null) {
+          return const AuthView();
+        } else {
+          Get.lazyPut<HomeController>(
+            () => HomeController(),
+          );
+          return const HomeView();
+        }
+      },
+    );
   }
 }
