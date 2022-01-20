@@ -25,34 +25,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      log(message.data.toString());
-      MeetingModel meetingModel =
-          MeetingModel.fromJson(message.data["meeting"]);
-      if (meetingModel.visitor != null) {
-        flutterLocalNotificationsPlugin.show(
-          99912,
-          "${meetingModel.visitor?.name} is requesting for meeting",
-          'Tap for more details',
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              priority: Priority.max,
-              importance: Importance.max,
-              fullScreenIntent: true,
-              channelDescription: channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/ic_launcher',
-            ),
-          ),
-        );
-        Future.delayed(const Duration(seconds: 60), () {
-          flutterLocalNotificationsPlugin.cancelAll();
-        });
-      }
-    });
+    handleFirebaseForegroundMessage();
   }
 
   @override
@@ -175,5 +148,36 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ));
+  }
+
+  void handleFirebaseForegroundMessage() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      log(message.data.toString());
+      MeetingModel meetingModel =
+          MeetingModel.fromJson(message.data["meeting"]);
+      if (meetingModel.visitor != null) {
+        flutterLocalNotificationsPlugin.show(
+          111112,
+          "${meetingModel.visitor?.name} is requesting for meeting",
+          'Tap for more details',
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              priority: Priority.max,
+              importance: Importance.max,
+              fullScreenIntent: true,
+              channelDescription: channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher',
+            ),
+          ),
+        );
+        Future.delayed(const Duration(seconds: 60), () {
+          flutterLocalNotificationsPlugin.cancelAll();
+        });
+      }
+    });
   }
 }

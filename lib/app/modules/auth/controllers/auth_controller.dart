@@ -37,8 +37,11 @@ class AuthController extends GetxController {
       isLoading.value = false;
       storeAuthToken(userCredential.user);
       final fcmToken = await FirebaseMessaging.instance.getToken();
-      AuthProviders()
-          .sendUserTokens(uid: userCredential.user?.uid, fcmToken: fcmToken);
+      AuthProviders().sendUserTokens(
+        uid: userCredential.user?.uid,
+        fcmToken: fcmToken,
+      );
+      Get.find<HomeController>().getHomePageDetails();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showSnackBar(
