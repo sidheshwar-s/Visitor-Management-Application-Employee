@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get.dart';
-
 import 'package:vms_employee_flutter/app/data/constants.dart';
-import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/providers/home_providers.dart';
+import 'package:vms_employee_flutter/app/modules/home/widgets/custom_button.dart';
 import 'package:vms_employee_flutter/app/modules/home/widgets/request_widget.dart';
 import 'package:vms_employee_flutter/app/modules/meeting_request/models/meeting_request_model.dart';
 import 'package:vms_employee_flutter/app/routes/app_pages.dart';
-
 import '../controllers/meeting_request_controller.dart';
 
 class MeetingRequestView extends GetView<MeetingRequestController> {
@@ -20,128 +19,147 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
 
   @override
   Widget build(BuildContext context) {
+    final homeController = Get.find<HomeController>();
     final meetingModel = meetingRequestModel?.meeting;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: DefaultTextStyle(
-            style: Get.textTheme.headline6!.copyWith(color: kWhite),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (meetingModel?.visitor?.selfieLink == null)
-                    const CircleAvatar(
-                      radius: 40,
-                      backgroundImage:
-                          AssetImage('assets/icons/user_image.png'),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: DefaultTextStyle(
+              style: Get.textTheme.headline6!.copyWith(color: kWhite),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 40,
                     ),
-                  if (meetingModel?.visitor?.selfieLink != null)
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                        meetingModel!.visitor!.selfieLink!,
+                    if (meetingModel?.visitor?.selfieLink == null)
+                      const CircleAvatar(
+                        radius: 40,
+                        backgroundImage:
+                            AssetImage('assets/icons/user_image.png'),
                       ),
-                    ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    meetingModel?.visitor?.name ?? "No Name",
-                    style: Get.textTheme.headline4?.copyWith(color: kWhite),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.all(20),
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: kDarkBlue,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Purpose"),
-                        const SizedBox(
-                          height: 10,
+                    if (meetingModel?.visitor?.selfieLink != null)
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: NetworkImage(
+                          meetingModel!.visitor!.selfieLink!,
                         ),
-                        Text(
-                          meetingModel?.purpose ?? "No purpose was mentioned",
-                          style: Get.textTheme.bodyText1?.copyWith(
-                            color: kWhite,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
+                      ),
+                    const SizedBox(
+                      height: 40,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Text(
+                      meetingModel?.visitor?.name ?? "No Name",
+                      style: Get.textTheme.headline4?.copyWith(color: kWhite),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: kDarkBlue,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
-                            onTap: () async {
-                              await HomeProviders()
-                                  .updateRequestedMeeting(
-                                    meetingId: meetingModel?.id ?? 'none',
-                                    status: "accepted",
-                                  )
-                                  ?.whenComplete(() =>
-                                      HomeController().getHomePageDetails());
-
-                              Get.lazyPut(() => AuthController());
-                              Get.offAllNamed(Routes.HOME);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kGreen,
-                              ),
-                              child: const Icon(
-                                Icons.done,
-                                color: kWhite,
-                                size: 30,
-                              ),
-                            ),
+                          const Text("Purpose"),
+                          const SizedBox(
+                            height: 10,
                           ),
-                          InkWell(
-                            onTap: () async {
-                              await handleRejection(
-                                meetingModel?.id ?? 'none',
-                                controller.rejectedReasonController,
-                                Get.find<HomeController>(),
-                                onTappedNotification: true,
-                                shouldCloseApp: true,
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: kRed,
-                              ),
-                              child: const Icon(
-                                Icons.cancel,
-                                color: kWhite,
-                                size: 30,
-                              ),
+                          Text(
+                            meetingModel?.purpose ?? "No purpose was mentioned",
+                            style: Get.textTheme.bodyText1?.copyWith(
+                              color: kWhite,
+                              fontSize: 16,
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            text: "Reject",
+                            color: kRed,
+                            onPressed: () async {
+                              homeController.isUpdationInProgress.value = true;
+                              await handleRejection(
+                                meetingModel?.id ?? 'none',
+                                homeController.rejectedReasonController,
+                                homeController,
+                              );
+                              homeController.isUpdationInProgress.value = false;
+                              Get.offAllNamed(Routes.HOME);
+                            },
+                            icon: Icons.cancel,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: CustomButton(
+                            text: "Reshedule",
+                            color: kBlue,
+                            onPressed: () async {
+                              await DatePicker.showTime12hPicker(
+                                context,
+                                currentTime: DateTime.now(),
+                                onChanged: (date) {
+                                  homeController.rescheduledTime = date;
+                                },
+                                onConfirm: (date) {
+                                  homeController.rescheduledTime = date;
+                                },
+                              );
+                              homeController.isUpdationInProgress.value = true;
+                              await HomeProviders().updateRequestedMeeting(
+                                meetingId: meetingModel?.id ?? 'none',
+                                status: "rescheduled",
+                                rescheduledTime:
+                                    homeController.rescheduledTime.toString(),
+                              );
+                              homeController.isUpdationInProgress.value = false;
+                              homeController.getHomePageDetails();
+                              Get.offAllNamed(Routes.HOME);
+                            },
+                            icon: Icons.arrow_forward_ios,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    CustomButton(
+                      key: const Key("accepting"),
+                      text: "Accept",
+                      color: kGreen,
+                      onPressed: () async {
+                        homeController.isUpdationInProgress.value = true;
+                        await HomeProviders().updateRequestedMeeting(
+                          meetingId: meetingModel?.id ?? 'none',
+                          status: "accepted",
+                        );
+                        homeController.isUpdationInProgress.value = false;
+                        homeController.getHomePageDetails();
+                        Get.offAllNamed(Routes.HOME);
+                      },
+                      icon: Icons.done,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

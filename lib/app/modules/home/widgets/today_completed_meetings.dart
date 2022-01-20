@@ -23,9 +23,13 @@ class TodayCompleteMeetings extends StatelessWidget {
         var currentRecord =
             controller.homePageDetails!.todayCompletedMeetings![index];
 
-        DateTime startTime = currentRecord.meetingAcceptedTime!;
-        DateTime endTime = currentRecord.meetingEndTime!;
-        Duration meetingTimings = endTime.difference(startTime);
+        DateTime? startTime = currentRecord.meetingAcceptedTime;
+        DateTime? endTime = currentRecord.meetingEndTime;
+        Duration? meetingTimings;
+
+        if (startTime != null && endTime != null) {
+          meetingTimings = endTime.difference(startTime);
+        }
 
         return TodayCompletedMeetingWidget(
           currentRecord: currentRecord,
@@ -44,7 +48,7 @@ class TodayCompletedMeetingWidget extends StatelessWidget {
   }) : super(key: key);
 
   final MeetingModel currentRecord;
-  final Duration meetingTimings;
+  final Duration? meetingTimings;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +93,7 @@ class TodayCompletedMeetingWidget extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    "Meeting Duration: ${meetingTimings.inMinutes} minutes",
+                    "Meeting Duration: ${meetingTimings?.inMinutes ?? 0} minutes",
                     style: Get.textTheme.bodyText1?.copyWith(
                       color: kBlack,
                     ),

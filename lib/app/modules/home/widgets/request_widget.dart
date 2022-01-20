@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
-
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/providers/home_providers.dart';
@@ -90,8 +88,7 @@ class RequestWidget extends GetView<HomeController> {
                         text: "Reshedule",
                         color: kBlue,
                         onPressed: () async {
-                          controller.isUpdationInProgress.value = true;
-                          DatePicker.showTime12hPicker(
+                          await DatePicker.showTime12hPicker(
                             context,
                             currentTime: DateTime.now(),
                             onChanged: (date) {
@@ -101,6 +98,7 @@ class RequestWidget extends GetView<HomeController> {
                               controller.rescheduledTime = date;
                             },
                           );
+                          controller.isUpdationInProgress.value = true;
                           await HomeProviders().updateRequestedMeeting(
                             meetingId: meetingId,
                             status: "rescheduled",
@@ -142,10 +140,12 @@ class RequestWidget extends GetView<HomeController> {
   }
 }
 
-handleRejection(String meetingId, TextEditingController textEditingController,
-    HomeController controller,
-    {bool shouldCloseApp = false, bool onTappedNotification = false}) async {
-  Get.defaultDialog(
+handleRejection(
+  String meetingId,
+  TextEditingController textEditingController,
+  HomeController controller,
+) async {
+  await Get.defaultDialog(
     titlePadding: const EdgeInsets.only(
       top: 15,
       bottom: 5,
@@ -164,12 +164,6 @@ handleRejection(String meetingId, TextEditingController textEditingController,
       )
           ?.whenComplete(() {
         controller.getHomePageDetails();
-        if (shouldCloseApp) {
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        }
-        if (onTappedNotification) {
-          Get.back();
-        }
       });
       Get.back();
     },

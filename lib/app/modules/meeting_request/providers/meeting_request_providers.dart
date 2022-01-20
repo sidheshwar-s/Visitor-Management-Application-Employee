@@ -8,9 +8,11 @@ class MeetingRequestProviders {
     const url = "$apiUrl/meeting/searchMeeting";
     try {
       Response response = await dioClient.get(url);
-      MeetingRequestModel meetingRequestModel =
-          MeetingRequestModel.fromMap(response.data);
-      return meetingRequestModel;
+      if (response.data != null) {
+        MeetingRequestModel meetingRequestModel =
+            MeetingRequestModel.fromMap(response.data);
+        return meetingRequestModel;
+      }
     } on DioError catch (e) {
       WidgetsBinding.instance
           ?.addPostFrameCallback((duration) => showSnackBar(title: e.message));
