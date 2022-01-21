@@ -52,7 +52,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
           channelDescription: channel.description,
           color: Colors.blue,
           playSound: true,
-          icon: '@mipmap/ic_launcher',
+          icon: '@mipmap/launcher_icon',
         ),
       ),
     );

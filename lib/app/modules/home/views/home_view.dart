@@ -160,7 +160,7 @@ class _HomeViewState extends State<HomeView> {
           MeetingModel.fromJson(message.data["meeting"]);
       if (meetingModel.visitor != null) {
         flutterLocalNotificationsPlugin.show(
-          000111,
+          notificationId,
           "${meetingModel.visitor?.name} is requesting for meeting",
           'Tap for more details',
           NotificationDetails(
@@ -173,7 +173,7 @@ class _HomeViewState extends State<HomeView> {
               channelDescription: channel.description,
               color: Colors.blue,
               playSound: true,
-              icon: '@mipmap/ic_launcher',
+              icon: '@mipmap/launcher_icon',
             ),
           ),
         );

@@ -56,39 +56,45 @@ class DashboardView extends GetView<DashboardController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Most Visited Visitor",
-                    style: Get.textTheme.headline5,
-                  ),
+                  if (mostVisitedVisitorModel?.visitorName != null)
+                    Text(
+                      "Most Visited Visitor",
+                      style: Get.textTheme.headline5,
+                    ),
                   const SizedBox(
                     height: 10,
                   ),
-                  MostVisitedVisitorWidget(
-                    photoUrl: photoUrl,
-                    mostVisitedVisitorModel: mostVisitedVisitorModel,
-                  ),
+                  if (mostVisitedVisitorModel?.visitorName != null)
+                    MostVisitedVisitorWidget(
+                      photoUrl: photoUrl,
+                      mostVisitedVisitorModel: mostVisitedVisitorModel,
+                    ),
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Longest Meeting",
-                    style: Get.textTheme.headline5,
-                  ),
+                  if (longestMeeting != null)
+                    Text(
+                      "Longest Meeting",
+                      style: Get.textTheme.headline5,
+                    ),
                   const SizedBox(
                     height: 20,
                   ),
-                  MeetingShowcaseWidget(meetingDetails: longestMeeting),
+                  if (longestMeeting != null)
+                    MeetingShowcaseWidget(meetingDetails: longestMeeting),
                   const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Shortest Meeting",
-                    style: Get.textTheme.headline5,
-                  ),
+                  if (shortestMeeting != null)
+                    Text(
+                      "Shortest Meeting",
+                      style: Get.textTheme.headline5,
+                    ),
                   const SizedBox(
                     height: 20,
                   ),
-                  MeetingShowcaseWidget(meetingDetails: shortestMeeting),
+                  if (shortestMeeting != null)
+                    MeetingShowcaseWidget(meetingDetails: shortestMeeting),
                 ],
               ),
             ),

@@ -61,12 +61,14 @@ class DashBoardModel {
       mostVisitedVisitor: map['mostVisitedVisitor'] != null
           ? MostVisitedVisitorModel.fromMap(map['mostVisitedVisitor'])
           : null,
-      longestMeeting: map['longestMeeting'] != null
-          ? MeetingModel.fromMap(map['longestMeeting'])
-          : null,
-      shortestMeeting: map['shortestMeeting'] != null
-          ? MeetingModel.fromMap(map['shortestMeeting'])
-          : null,
+      longestMeeting:
+          map['longestMeeting'] != null && map['longestMeeting'] != "0"
+              ? MeetingModel.fromMap(map['longestMeeting'])
+              : null,
+      shortestMeeting:
+          map['shortestMeeting'] != null && map['shortestMeeting'] != "0"
+              ? MeetingModel.fromMap(map['shortestMeeting'])
+              : null,
     );
   }
 

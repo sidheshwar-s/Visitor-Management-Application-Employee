@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:vms_employee_flutter/app/data/common.dart';
 import 'package:vms_employee_flutter/app/modules/auth/providers/auth_providers.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
-import 'package:vms_employee_flutter/app/routes/app_pages.dart';
 
 class AuthController extends GetxController {
   final TextEditingController emailController = TextEditingController();
@@ -91,8 +88,6 @@ class AuthController extends GetxController {
   void signOut() async {
     try {
       await firebaseAuth.signOut();
-      Get.delete<HomeController>();
-      Get.offAllNamed(Routes.AUTH);
     } on FirebaseException catch (e) {
       showSnackBar(
         title: "Sorry coudn't Sign Out currently",
