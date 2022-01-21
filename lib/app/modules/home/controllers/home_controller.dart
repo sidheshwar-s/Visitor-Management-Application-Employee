@@ -20,6 +20,7 @@ class HomeController extends GetxController with StateMixin {
   void getHomePageDetails() async {
     change(null, status: RxStatus.loading());
     homePageDetails = await HomeProviders().getHomePageDetails();
+    vacationMode.value = homePageDetails?.employee?.isOnVacationMode ?? false;
     change(null, status: RxStatus.success());
   }
 }

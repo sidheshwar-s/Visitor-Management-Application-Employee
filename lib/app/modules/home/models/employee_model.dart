@@ -99,7 +99,7 @@ class EmployeeModel {
       designation: map['designation'],
       isOnVacationMode: map['isOnVacationMode'],
       role: map['role'],
-      companyId: map['company'],
+      companyId: map['company'].toString(),
       createdAt: map['createdAt'] != null
           ? DateTime.parse(map['createdAt']).toLocal()
           : null,

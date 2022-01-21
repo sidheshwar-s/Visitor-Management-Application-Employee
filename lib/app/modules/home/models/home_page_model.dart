@@ -1,5 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
+import 'package:vms_employee_flutter/app/modules/home/models/employee_model.dart';
 import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
 
 class HomePageModel {
@@ -7,11 +10,13 @@ class HomePageModel {
   final List<MeetingModel>? requestMeetings;
   final List<MeetingModel>? todayCompletedMeetings;
   final List<MeetingModel>? inProgressMeetings;
+  final EmployeeModel? employee;
   HomePageModel({
     this.message,
     this.requestMeetings,
     this.todayCompletedMeetings,
     this.inProgressMeetings,
+    this.employee,
   });
 
   HomePageModel copyWith({
@@ -19,6 +24,7 @@ class HomePageModel {
     List<MeetingModel>? requestMeetings,
     List<MeetingModel>? todayCompletedMeetings,
     List<MeetingModel>? inProgressMeetings,
+    EmployeeModel? employee,
   }) {
     return HomePageModel(
       message: message ?? this.message,
@@ -26,6 +32,7 @@ class HomePageModel {
       todayCompletedMeetings:
           todayCompletedMeetings ?? this.todayCompletedMeetings,
       inProgressMeetings: inProgressMeetings ?? this.inProgressMeetings,
+      employee: employee ?? this.employee,
     );
   }
 
@@ -36,6 +43,7 @@ class HomePageModel {
       'todayCompletedMeetings':
           todayCompletedMeetings?.map((x) => x.toMap()).toList(),
       'inProgressMeetings': inProgressMeetings?.map((x) => x.toMap()).toList(),
+      'employee': employee?.toMap(),
     };
   }
 
@@ -54,6 +62,9 @@ class HomePageModel {
           ? List<MeetingModel>.from(
               map['inProgressMeetings']?.map((x) => MeetingModel.fromMap(x)))
           : null,
+      employee: map['employee'] != null
+          ? EmployeeModel.fromMap(map['employee'])
+          : null,
     );
   }
 
@@ -64,7 +75,7 @@ class HomePageModel {
 
   @override
   String toString() {
-    return 'HomePageModel(message: $message, requestMeetings: $requestMeetings, todayCompletedMeetings: $todayCompletedMeetings, inProgressMeetings: $inProgressMeetings)';
+    return 'HomePageModel(message: $message, requestMeetings: $requestMeetings, todayCompletedMeetings: $todayCompletedMeetings, inProgressMeetings: $inProgressMeetings, employee: $employee)';
   }
 
   @override
@@ -75,7 +86,8 @@ class HomePageModel {
         other.message == message &&
         listEquals(other.requestMeetings, requestMeetings) &&
         listEquals(other.todayCompletedMeetings, todayCompletedMeetings) &&
-        listEquals(other.inProgressMeetings, inProgressMeetings);
+        listEquals(other.inProgressMeetings, inProgressMeetings) &&
+        other.employee == employee;
   }
 
   @override
@@ -83,6 +95,7 @@ class HomePageModel {
     return message.hashCode ^
         requestMeetings.hashCode ^
         todayCompletedMeetings.hashCode ^
-        inProgressMeetings.hashCode;
+        inProgressMeetings.hashCode ^
+        employee.hashCode;
   }
 }

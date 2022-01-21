@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/auth/controllers/auth_controller.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
+import 'package:vms_employee_flutter/app/modules/home/providers/home_providers.dart';
 import 'package:vms_employee_flutter/app/routes/app_pages.dart';
 
 class HomeDrawer extends GetView<HomeController> {
@@ -48,7 +49,7 @@ class HomeDrawer extends GetView<HomeController> {
   }
 }
 
-class EmployeeInfo extends StatelessWidget {
+class EmployeeInfo extends GetView<HomeController> {
   const EmployeeInfo({
     Key? key,
     required this.authController,
@@ -85,7 +86,7 @@ class EmployeeInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  authController.userName ?? "No name",
+                  controller.homePageDetails?.employee?.name ?? "No name",
                   style: Get.textTheme.headline6?.copyWith(
                     color: kWhite,
                   ),
@@ -151,6 +152,10 @@ class VacationModeListTile extends StatelessWidget {
           activeColor: kRed,
           inactiveThumbColor: kWhite,
           onChanged: (bool val) {
+            HomeProviders().updateVacationMode(
+              val,
+              controller.homePageDetails?.employee?.id ?? 'none',
+            );
             controller.vacationMode.value = val;
           },
         ),

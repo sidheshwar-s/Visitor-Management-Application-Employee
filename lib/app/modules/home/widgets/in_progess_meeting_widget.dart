@@ -87,6 +87,7 @@ class InProgressWidget extends GetView<HomeController> {
                             meetingId: meetingId,
                             status: "completed",
                             meetingNote: controller.meetinNotesController.text,
+                            meetingEndTime: DateTime.now().toString(),
                           );
                           controller.isUpdationInProgress.value = false;
                           Get.back();
