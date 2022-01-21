@@ -4,7 +4,7 @@
    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:usesCleartextTraffic="true"
-        android:label="vms_employee_flutter"
+        android:label="VMS employee"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
