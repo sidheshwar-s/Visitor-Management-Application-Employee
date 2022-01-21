@@ -126,9 +126,10 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                               homeController.isUpdationInProgress.value = true;
                               await HomeProviders().updateRequestedMeeting(
                                 meetingId: meetingModel?.id ?? 'none',
-                                status: "rescheduled",
-                                rescheduledTime:
-                                    homeController.rescheduledTime.toString(),
+                                status: "reschedule",
+                                rescheduledTime: homeController
+                                    .rescheduledTime?.millisecondsSinceEpoch
+                                    .toString(),
                               );
                               homeController.isUpdationInProgress.value = false;
                               homeController.getHomePageDetails();

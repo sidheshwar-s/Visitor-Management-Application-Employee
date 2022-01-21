@@ -102,8 +102,9 @@ class RequestWidget extends GetView<HomeController> {
                           await HomeProviders().updateRequestedMeeting(
                             meetingId: meetingId,
                             status: "rescheduled",
-                            rescheduledTime:
-                                controller.rescheduledTime.toString(),
+                            rescheduledTime: controller
+                                .rescheduledTime?.millisecondsSinceEpoch
+                                .toString(),
                           );
                           controller.isUpdationInProgress.value = false;
                           controller.getHomePageDetails();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:vms_employee_flutter/app/data/common.dart';
 import 'package:vms_employee_flutter/app/modules/auth/providers/auth_providers.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
+import 'package:vms_employee_flutter/app/routes/app_pages.dart';
 
 class AuthController extends GetxController {
   final TextEditingController emailController = TextEditingController();
@@ -37,11 +40,14 @@ class AuthController extends GetxController {
       isLoading.value = false;
       storeAuthToken(userCredential.user);
       final fcmToken = await FirebaseMessaging.instance.getToken();
-      AuthProviders().sendUserTokens(
+      AuthProviders()
+          .sendUserTokens(
         uid: userCredential.user?.uid,
         fcmToken: fcmToken,
-      );
-      Get.find<HomeController>().getHomePageDetails();
+      )
+          .whenComplete(() {
+        Get.find<HomeController>().getHomePageDetails();
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showSnackBar(
@@ -86,6 +92,7 @@ class AuthController extends GetxController {
     try {
       await firebaseAuth.signOut();
       Get.delete<HomeController>();
+      Get.offAllNamed(Routes.AUTH);
     } on FirebaseException catch (e) {
       showSnackBar(
         title: "Sorry coudn't Sign Out currently",

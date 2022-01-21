@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
@@ -42,6 +44,8 @@ class HomeProviders {
       "rescheduledTime": rescheduledTime,
       "meetingEndTime": meetingEndTime,
     };
+
+    log(rescheduledTime ?? '');
 
     const String url = "$apiUrl/meeting/updateMeetingStatus";
 

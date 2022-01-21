@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,8 +36,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log(message.data.toString());
   MeetingModel meetingModel = MeetingModel.fromJson(message.data["meeting"]);
   if (meetingModel.visitor != null) {
+    var random = math.Random();
+    int notificationId = random.nextInt(math.pow(2, 31).toInt() - 1);
     flutterLocalNotificationsPlugin.show(
-      111111,
+      notificationId,
       "${meetingModel.visitor?.name} is requesting for meeting",
       'Tap for more details',
       NotificationDetails(

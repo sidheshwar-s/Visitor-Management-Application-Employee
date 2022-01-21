@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -152,12 +153,14 @@ class _HomeViewState extends State<HomeView> {
 
   void handleFirebaseForegroundMessage() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      var random = math.Random();
+      int notificationId = random.nextInt(math.pow(2, 31).toInt() - 1);
       log(message.data.toString());
       MeetingModel meetingModel =
           MeetingModel.fromJson(message.data["meeting"]);
       if (meetingModel.visitor != null) {
         flutterLocalNotificationsPlugin.show(
-          111112,
+          000111,
           "${meetingModel.visitor?.name} is requesting for meeting",
           'Tap for more details',
           NotificationDetails(

@@ -4,7 +4,8 @@ import 'package:vms_employee_flutter/app/data/common.dart';
 class AuthProviders {
   static Dio dio = dioClient;
 
-  sendUserTokens({required String? uid, required String? fcmToken}) async {
+  Future<void> sendUserTokens(
+      {required String? uid, required String? fcmToken}) async {
     const url = "$apiUrl/employee/saveFcmToken";
 
     final Map<String, String?> data = {
