@@ -62,18 +62,24 @@ class VisitorInfoView extends GetView<VisitorInfoController> {
                 height: 20,
               ),
               MeetingCountWidget(
+                category: "Completed Meetings",
                 title:
-                    "Completed Meetings  -  ${controller.visitorInfo!.completedMeetings}",
+                    "Completed Meetings  -  ${controller.visitorInfo!.completedMeetings?.length}",
+                meetings: controller.visitorInfo!.completedMeetings,
                 color: kGreen,
               ),
               MeetingCountWidget(
+                category: "Rejected Meetings",
                 title:
-                    "Rejected Meetings  -  ${controller.visitorInfo!.rejectedMeetings}",
+                    "Rejected Meetings  -  ${controller.visitorInfo!.rejectedMeetings?.length}",
+                meetings: controller.visitorInfo!.rejectedMeetings,
                 color: kRed,
               ),
               MeetingCountWidget(
+                category: "Rescheduled Meetings",
                 title:
-                    "Rescheduled Meetings  -  ${controller.visitorInfo!.rescheduledMeetings}",
+                    "Rescheduled Meetings  -  ${controller.visitorInfo!.rescheduledMeetings?.length}",
+                meetings: controller.visitorInfo!.rescheduledMeetings,
                 color: kDarkBlue!,
               )
             ],

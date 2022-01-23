@@ -53,8 +53,11 @@ class VisitorLogView extends GetView<VisitorLogController> {
                       return Obx(
                         () {
                           if (currentVisitor.name!
-                              .toLowerCase()
-                              .contains(controller.searchString.value)) {
+                                  .toLowerCase()
+                                  .contains(controller.searchString.value) ||
+                              currentVisitor.companyName!
+                                  .toLowerCase()
+                                  .contains(controller.searchString)) {
                             return InkWell(
                               borderRadius: BorderRadius.circular(15),
                               onTap: () {

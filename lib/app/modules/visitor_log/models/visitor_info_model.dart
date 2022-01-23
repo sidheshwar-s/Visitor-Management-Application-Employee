@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
+import 'package:vms_employee_flutter/app/modules/home/models/meeting_model.dart';
+
 class VisitorInfoModel {
   final String? message;
-  final int? completedMeetings;
-  final int? rescheduledMeetings;
-  final int? rejectedMeetings;
+  final List<MeetingModel>? completedMeetings;
+  final List<MeetingModel>? rescheduledMeetings;
+  final List<MeetingModel>? rejectedMeetings;
   VisitorInfoModel({
     this.message,
     this.completedMeetings,
@@ -14,9 +18,9 @@ class VisitorInfoModel {
 
   VisitorInfoModel copyWith({
     String? message,
-    int? completedMeetings,
-    int? rescheduledMeetings,
-    int? rejectedMeetings,
+    List<MeetingModel>? completedMeetings,
+    List<MeetingModel>? rescheduledMeetings,
+    List<MeetingModel>? rejectedMeetings,
   }) {
     return VisitorInfoModel(
       message: message ?? this.message,
@@ -29,18 +33,28 @@ class VisitorInfoModel {
   Map<String, dynamic> toMap() {
     return {
       'message': message,
-      'completedMeetings': completedMeetings,
-      'rescheduledMeetings': rescheduledMeetings,
-      'rejectedMeetings': rejectedMeetings,
+      'completedMeetings': completedMeetings?.map((x) => x.toMap()).toList(),
+      'rescheduledMeetings':
+          rescheduledMeetings?.map((x) => x.toMap()).toList(),
+      'rejectedMeetings': rejectedMeetings?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory VisitorInfoModel.fromMap(Map<String, dynamic> map) {
     return VisitorInfoModel(
       message: map['message'],
-      completedMeetings: map['completedMeetings']?.length,
-      rescheduledMeetings: map['rescheduledMeetings']?.length,
-      rejectedMeetings: map['rejectedMeetings']?.length,
+      completedMeetings: map['completedMeetings'] != null
+          ? List<MeetingModel>.from(
+              map['completedMeetings']?.map((x) => MeetingModel.fromMap(x)))
+          : null,
+      rescheduledMeetings: map['rescheduledMeetings'] != null
+          ? List<MeetingModel>.from(
+              map['rescheduledMeetings']?.map((x) => MeetingModel.fromMap(x)))
+          : null,
+      rejectedMeetings: map['rejectedMeetings'] != null
+          ? List<MeetingModel>.from(
+              map['rejectedMeetings']?.map((x) => MeetingModel.fromMap(x)))
+          : null,
     );
   }
 
@@ -60,9 +74,9 @@ class VisitorInfoModel {
 
     return other is VisitorInfoModel &&
         other.message == message &&
-        other.completedMeetings == completedMeetings &&
-        other.rescheduledMeetings == rescheduledMeetings &&
-        other.rejectedMeetings == rejectedMeetings;
+        listEquals(other.completedMeetings, completedMeetings) &&
+        listEquals(other.rescheduledMeetings, rescheduledMeetings) &&
+        listEquals(other.rejectedMeetings, rejectedMeetings);
   }
 
   @override
