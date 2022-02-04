@@ -90,16 +90,19 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                       children: [
                         Expanded(
                           child: CustomButton(
+                            isUpdationInProgress:
+                                homeController.isRejectionInProgress,
                             text: "Reject",
                             color: kRed,
                             onPressed: () async {
-                              homeController.isUpdationInProgress.value = true;
+                              homeController.isRejectionInProgress.value = true;
                               await handleRejection(
                                 meetingModel?.id ?? 'none',
                                 homeController.rejectedReasonController,
                                 homeController,
                               );
-                              homeController.isUpdationInProgress.value = false;
+                              homeController.isRejectionInProgress.value =
+                                  false;
                               Get.offAllNamed(Routes.HOME);
                             },
                             icon: Icons.cancel,
@@ -110,6 +113,8 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                         ),
                         Expanded(
                           child: CustomButton(
+                            isUpdationInProgress:
+                                homeController.isRescheduleInProgress,
                             text: "Reshedule",
                             color: kBlue,
                             onPressed: () async {
@@ -123,7 +128,8 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                                   homeController.rescheduledTime = date;
                                 },
                               );
-                              homeController.isUpdationInProgress.value = true;
+                              homeController.isRescheduleInProgress.value =
+                                  true;
                               await HomeProviders().updateRequestedMeeting(
                                 meetingId: meetingModel?.id ?? 'none',
                                 status: "reschedule",
@@ -131,7 +137,8 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                                     .rescheduledTime?.millisecondsSinceEpoch
                                     .toString(),
                               );
-                              homeController.isUpdationInProgress.value = false;
+                              homeController.isRescheduleInProgress.value =
+                                  false;
                               homeController.getHomePageDetails();
                               Get.offAllNamed(Routes.HOME);
                             },
@@ -144,16 +151,18 @@ class MeetingRequestView extends GetView<MeetingRequestController> {
                       height: 40,
                     ),
                     CustomButton(
+                      isUpdationInProgress:
+                          homeController.isAcceptingInProgress,
                       key: const Key("accepting"),
                       text: "Accept",
                       color: kGreen,
                       onPressed: () async {
-                        homeController.isUpdationInProgress.value = true;
+                        homeController.isAcceptingInProgress.value = true;
                         await HomeProviders().updateRequestedMeeting(
                           meetingId: meetingModel?.id ?? 'none',
                           status: "accepted",
                         );
-                        homeController.isUpdationInProgress.value = false;
+                        homeController.isAcceptingInProgress.value = false;
                         homeController.getHomePageDetails();
                         Get.offAllNamed(Routes.HOME);
                       },

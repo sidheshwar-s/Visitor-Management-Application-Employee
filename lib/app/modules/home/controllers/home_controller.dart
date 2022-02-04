@@ -15,6 +15,9 @@ class HomeController extends GetxController with StateMixin {
   TextEditingController rejectedReasonController = TextEditingController();
   TextEditingController meetinNotesController = TextEditingController();
   DateTime? rescheduledTime;
+  RxBool isRejectionInProgress = RxBool(false);
+  RxBool isRescheduleInProgress = RxBool(false);
+  RxBool isAcceptingInProgress = RxBool(false);
   RxBool isUpdationInProgress = RxBool(false);
 
   void getHomePageDetails() async {

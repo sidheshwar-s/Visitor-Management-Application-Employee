@@ -66,16 +66,17 @@ class RequestWidget extends GetView<HomeController> {
                   children: [
                     Expanded(
                       child: CustomButton(
+                        isUpdationInProgress: controller.isRejectionInProgress,
                         text: "Reject",
                         color: kRed,
                         onPressed: () async {
-                          controller.isUpdationInProgress.value = true;
+                          controller.isRejectionInProgress.value = true;
                           await handleRejection(
                             meetingId,
                             controller.rejectedReasonController,
                             controller,
                           );
-                          controller.isUpdationInProgress.value = false;
+                          controller.isRejectionInProgress.value = false;
                         },
                         icon: Icons.cancel,
                       ),
@@ -85,6 +86,7 @@ class RequestWidget extends GetView<HomeController> {
                     ),
                     Expanded(
                       child: CustomButton(
+                        isUpdationInProgress: controller.isRescheduleInProgress,
                         text: "Reshedule",
                         color: kBlue,
                         onPressed: () async {
@@ -98,7 +100,7 @@ class RequestWidget extends GetView<HomeController> {
                               controller.rescheduledTime = date;
                             },
                           );
-                          controller.isUpdationInProgress.value = true;
+                          controller.isRescheduleInProgress.value = true;
                           await HomeProviders().updateRequestedMeeting(
                             meetingId: meetingId,
                             status: "rescheduled",
@@ -106,7 +108,7 @@ class RequestWidget extends GetView<HomeController> {
                                 .rescheduledTime?.millisecondsSinceEpoch
                                 .toString(),
                           );
-                          controller.isUpdationInProgress.value = false;
+                          controller.isRescheduleInProgress.value = false;
                           controller.getHomePageDetails();
                         },
                         icon: Icons.arrow_forward_ios,
@@ -121,13 +123,14 @@ class RequestWidget extends GetView<HomeController> {
                   key: const Key("accepting"),
                   text: "Accept",
                   color: kGreen,
+                  isUpdationInProgress: controller.isAcceptingInProgress,
                   onPressed: () async {
-                    controller.isUpdationInProgress.value = true;
+                    controller.isAcceptingInProgress.value = true;
                     await HomeProviders().updateRequestedMeeting(
                       meetingId: meetingId,
                       status: "accepted",
                     );
-                    controller.isUpdationInProgress.value = false;
+                    controller.isAcceptingInProgress.value = false;
                     controller.getHomePageDetails();
                   },
                   icon: Icons.done,

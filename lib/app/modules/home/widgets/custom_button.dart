@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:vms_employee_flutter/app/data/constants.dart';
 import 'package:vms_employee_flutter/app/modules/home/controllers/home_controller.dart';
 
@@ -13,12 +11,14 @@ class CustomButton extends GetView<HomeController> {
     required this.onPressed,
     required this.icon,
     this.radius = 20,
+    required this.isUpdationInProgress,
   }) : super(key: key);
   final String text;
   final Color color;
   final VoidCallback onPressed;
   final IconData icon;
   final double? radius;
+  final RxBool isUpdationInProgress;
 
   @override
   Widget build(BuildContext context) {
@@ -48,12 +48,12 @@ class CustomButton extends GetView<HomeController> {
               const SizedBox(
                 width: 10,
               ),
-              if (!controller.isUpdationInProgress.value)
+              if (!isUpdationInProgress.value)
                 Icon(
                   icon,
                   color: kWhite,
                 ),
-              if (controller.isUpdationInProgress.value)
+              if (isUpdationInProgress.value)
                 const SizedBox(
                   height: 10,
                   width: 10,

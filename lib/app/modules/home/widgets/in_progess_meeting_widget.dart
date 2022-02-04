@@ -67,6 +67,7 @@ class InProgressWidget extends GetView<HomeController> {
                   height: 50,
                   width: double.infinity,
                   child: CustomButton(
+                    isUpdationInProgress: controller.isUpdationInProgress,
                     text: "Mark as completed",
                     color: kGreen,
                     onPressed: () {
